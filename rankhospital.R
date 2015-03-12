@@ -1,6 +1,5 @@
-best <- function(state, outcome) {
-
-     ## Return hospital name in that state with lowest 30-day death rate
+rankhospital <- function(state, outcome, num = "best") {
+     ## Return hospital name in that state with the given rank 30-day death rate
      
      ## Read outcome data
      datos <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
@@ -24,7 +23,7 @@ best <- function(state, outcome) {
           stop ("invalid outcome")
      }
      
-     ## Find out the hospital with lowest 30-day death rate
+     ## Find out the list of hospitals with lowest 30-day death rate
      ## 1) filter by state
      datos <- datos[datos["state"] == state,]     
      
@@ -33,12 +32,25 @@ best <- function(state, outcome) {
      
      ## 3) get the list ordered by the column 
      ordenado<-datos[order(datos[,outcome],  datos[,"hospital.name"]),]
-
-     ordenado[["hospital.name"]][1]
      
-
-     #f1 = factor("Not Available")
-     #buenos = !(datos[[outcome]] == f1)
-     #datosbuenos = datos[[outcome]][buenos]
+     no_na <- !(is.na(ordenado[[outcome]]))
+     
+     ## if num = "worst" it is the last of the list no NA
+     ## if num = "best" it is the first of the list
+     if (num == "best"){
+          num <- 1
+     }
+     if (num == "worst"){
+          num <- sum(no_na)
+     }
+     
+     ## return a NA if there is not enough hospitals in the list to reach num-th
+     if (sum(no_na) < num){
+          NA
+     }
+     else {
+          ordenado[["hospital.name"]][num]
+     }
+     
      
 }
