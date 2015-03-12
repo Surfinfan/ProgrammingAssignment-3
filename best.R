@@ -32,7 +32,7 @@ best <- function(state, outcome) {
      datos[outcome] <- as.numeric(datos[[outcome]])          
      
      ## 3) get the list ordered by the column 
-     ordenado<-datos[order(datos[,outcome]),]
+     ordenado<-datos[order(datos[,outcome],  datos[,"hospital.name"]),]
 
      ordenado[["hospital.name"]][1]
      
