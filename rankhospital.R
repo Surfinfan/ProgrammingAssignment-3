@@ -23,6 +23,11 @@ rankhospital <- function(state, outcome, num = "best") {
           stop ("invalid outcome")
      }
      
+     ## Check that num is valid ("best", "worst" or numeric)
+     if ((num != "best") && (num != "worst") && (class(num) != "numeric")){
+          stop ("invalid num")
+     }
+     
      ## Find out the list of hospitals with lowest 30-day death rate
      ## 1) filter by state
      datos <- datos[datos["state"] == state,]     
